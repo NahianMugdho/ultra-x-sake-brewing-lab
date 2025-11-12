@@ -1,0 +1,6 @@
+CREATE TABLE snapshots (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    filename VARCHAR(255),
+    image LONGBLOB,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

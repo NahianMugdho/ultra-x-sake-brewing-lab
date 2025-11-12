@@ -1,0 +1,44 @@
+2025-10-13 10:32:25,486 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2025-10-13 10:32:25,523 INFO o.a.j.JMeter: Loading user properties from: D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\user.properties
+2025-10-13 10:32:25,537 INFO o.a.j.JMeter: Loading system properties from: D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3\bin\system.properties
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: Copyright (c) 1998-2024 The Apache Software Foundation
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: Version 5.6.3
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: java.version=24.0.2
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: os.name=Windows 11
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: os.arch=amd64
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: os.version=10.0
+2025-10-13 10:32:25,557 INFO o.a.j.JMeter: file.encoding=UTF-8
+2025-10-13 10:32:25,558 INFO o.a.j.JMeter: java.awt.headless=null
+2025-10-13 10:32:25,558 INFO o.a.j.JMeter: Max memory     =1073741824
+2025-10-13 10:32:25,558 INFO o.a.j.JMeter: Available Processors =8
+2025-10-13 10:32:25,588 INFO o.a.j.JMeter: Default Locale=English (EN)
+2025-10-13 10:32:25,589 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2025-10-13 10:32:25,589 INFO o.a.j.JMeter: JMeterHome=D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3
+2025-10-13 10:32:25,589 INFO o.a.j.JMeter: user.dir  =D:\mugdho\jmeter\iot environment testing
+2025-10-13 10:32:25,590 INFO o.a.j.JMeter: PWD       =D:\mugdho\jmeter\iot environment testing
+2025-10-13 10:32:25,592 INFO o.a.j.JMeter: IP: 192.168.88.60 Name: Mugdho FullName: Mugdho
+2025-10-13 10:32:25,632 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2025-10-13 10:32:26,039 INFO o.a.j.JMeterGuiLauncher: Setting LAF to: com.github.weisj.darklaf.DarkLaf:com.github.weisj.darklaf.theme.DarculaTheme
+2025-10-13 10:32:27,620 INFO o.a.j.r.ClassFinder: Will scan jar D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3\lib\ext\mqtt-xmeter-2.0.2-jar-with-dependencies.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.gui.action.Command], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-10-13 10:32:28,340 INFO o.a.j.r.ClassFinder: Will scan jar D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3\lib\ext\mqtt-xmeter-2.0.2-jar-with-dependencies.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.gui.plugin.MenuCreator], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-10-13 10:32:40,699 INFO o.a.j.s.FileServer: Default base='D:\mugdho\jmeter\iot environment testing'
+2025-10-13 10:32:40,702 INFO o.a.j.g.a.Load: Loading file: D:\mugdho\jmeter\iot environment testing\login.jmx
+2025-10-13 10:32:40,702 INFO o.a.j.s.FileServer: Set new base='D:\mugdho\jmeter\iot environment testing'
+2025-10-13 10:32:41,040 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2025-10-13 10:32:41,085 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2025-10-13 10:32:41,088 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2025-10-13 10:32:41,089 INFO o.a.j.s.SaveService: Loading file: D:\mugdho\jmeter\iot environment testing\login.jmx
+2025-10-13 10:32:41,143 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-10-13 10:32:41,143 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-10-13 10:32:41,143 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-10-13 10:32:41,143 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2025-10-13 10:32:41,143 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2025-10-13 10:32:41,143 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2025-10-13 10:32:41,453 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2025-10-13 10:32:41,453 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to UTF-8
+2025-10-13 10:32:41,453 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2025-10-13 10:32:41,453 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2025-10-13 10:32:41,572 INFO o.a.j.r.ClassFinder: Will scan jar D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3\lib\ext\mqtt-xmeter-2.0.2-jar-with-dependencies.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.visualizers.ResultRenderer], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-10-13 10:32:41,599 INFO o.a.j.r.ClassFinder: Will scan jar D:\mugdho\apache-jmeter-5.6.3\apache-jmeter-5.6.3\lib\ext\mqtt-xmeter-2.0.2-jar-with-dependencies.jar with filter ExtendsClassFilter [parents=[interface org.apache.jmeter.visualizers.RequestView], inner=false, contains=null, notContains=null]. Consider exposing JMeter plugins via META-INF/services, and add JMeter-Skip-Class-Scanning=true manifest attribute so JMeter can skip classfile scanning
+2025-10-13 10:32:41,686 INFO o.a.j.s.FileServer: Set new base='D:\mugdho\jmeter\iot environment testing'

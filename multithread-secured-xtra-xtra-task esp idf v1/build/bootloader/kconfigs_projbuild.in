@@ -1,0 +1,5 @@
+source "D:/mugdho/Espressif/frameworks/esp-idf-v5.5/components/bootloader/Kconfig.projbuild"
+source "D:/mugdho/Espressif/frameworks/esp-idf-v5.5/components/esp_app_format/Kconfig.projbuild"
+source "D:/mugdho/Espressif/frameworks/esp-idf-v5.5/components/esp_rom/Kconfig.projbuild"
+source "D:/mugdho/Espressif/frameworks/esp-idf-v5.5/components/esptool_py/Kconfig.projbuild"
+source "D:/mugdho/Espressif/frameworks/esp-idf-v5.5/components/partition_table/Kconfig.projbuild"

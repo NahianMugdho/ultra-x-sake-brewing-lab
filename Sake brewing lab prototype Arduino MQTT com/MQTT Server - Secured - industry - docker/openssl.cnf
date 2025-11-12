@@ -1,0 +1,21 @@
+[ req ]
+default_bits       = 2048
+distinguished_name = req_distinguished_name
+req_extensions     = v3_req
+x509_extensions    = v3_req
+prompt             = no
+
+[ req_distinguished_name ]
+C  = BD
+ST = Dhaka
+L  = Dhaka
+O  = Ultra-X
+OU = IoT
+CN = 192.168.88.60   # 👈 Your current broker IP
+
+[ v3_req ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+IP.1 = 192.168.88.60   # 👈 Your current LAN IP
+DNS.1 = localhost       # 👈 Optional, for local testing

@@ -1,0 +1,4 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+MQTT Connect,1000,839,0,4748,1471.85,59.400%,72.09286,2.61,0.00,37.1
+MQTT Sub Sampler,4350,0,0,0,0.00,13.655%,313.71701,3.89,0.00,12.7
+TOTAL,5350,156,0,4748,715.57,22.206%,359.73642,6.06,0.00,17.3

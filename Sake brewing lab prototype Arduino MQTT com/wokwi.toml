@@ -1,0 +1,12 @@
+# Wokwi Configuration File
+# Reference: https://docs.wokwi.com/vscode/project-config
+[wokwi]
+version = 1
+firmware = '.pio/build/esp32dev/firmware.bin'
+elf = '.pio/build/esp32dev/firmware.elf'
+rfc2217ServerPort = 9333
+
+# Forward http://localhost:8180 to port 80 on the simulated ESP32:
+[[net.forward]]
+from = "localhost:8180"
+to = "target:80"

@@ -1,0 +1,20 @@
+{
+  "idf.pythonInstallPath": "D:\\mugdho\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
+  "idf.espIdfPathWin": "D:/mugdho/Espressif/frameworks/esp-idf-v5.5/",
+  "idf.openOcdConfigs": [
+    "board/esp32-wrover-kit-3.3v.cfg"
+  ],
+  "idf.toolsPathWin": "D:\\mugdho\\Espressif",
+  "idf.port": "COM7",
+  "idf.customExtraVars": {
+    "IDF_TARGET": "esp32"
+  },
+  "idf.flashType": "UART",
+  "clangd.path": "D:\\mugdho\\Espressif\\tools\\esp-clang\\esp-19.1.2_20250312\\esp-clang\\bin\\clangd.exe",
+  "clangd.arguments": [
+    "--background-index",
+    "--query-driver=D:\\mugdho\\Espressif\\tools\\xtensa-esp-elf\\esp-14.2.0_20241119\\xtensa-esp32-elf\\bin\\xtensa-esp32-elf-gcc.exe",
+    "--compile-commands-dir=${workspaceFolder}\\build"
+  ],
+  "idf.portWin": "COM7"
+}

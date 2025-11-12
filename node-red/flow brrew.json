@@ -1,0 +1,794 @@
+[
+    {
+        "id": "bccd8b5d240f8b66",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4d85d5ceec6dff27",
+        "type": "mqtt in",
+        "z": "bccd8b5d240f8b66",
+        "name": "Machine Status Subscriber",
+        "topic": "sonarT",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "f642a2dac67641e6",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 150,
+        "y": 580,
+        "wires": [
+            [
+                "4ebbd535fb6650ae"
+            ]
+        ]
+    },
+    {
+        "id": "4ebbd535fb6650ae",
+        "type": "switch",
+        "z": "bccd8b5d240f8b66",
+        "name": "Check PO / PS",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "PO",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "PS",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 370,
+        "y": 580,
+        "wires": [
+            [
+                "98369fac3f8dc70b"
+            ],
+            [
+                "1fc19ea2962c2074"
+            ]
+        ]
+    },
+    {
+        "id": "98369fac3f8dc70b",
+        "type": "change",
+        "z": "bccd8b5d240f8b66",
+        "name": "PO → Red ON, Blue OFF",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"red\":\"ON\",\"blue\":\"OFF\"}",
+                "tot": "json"
+            }
+        ],
+        "x": 620,
+        "y": 560,
+        "wires": [
+            [
+                "070f083103d11b4e"
+            ]
+        ]
+    },
+    {
+        "id": "1fc19ea2962c2074",
+        "type": "change",
+        "z": "bccd8b5d240f8b66",
+        "name": "PS → Blue ON, Red OFF",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"red\":\"OFF\",\"blue\":\"ON\"}",
+                "tot": "json"
+            }
+        ],
+        "x": 620,
+        "y": 600,
+        "wires": [
+            [
+                "070f083103d11b4e"
+            ]
+        ]
+    },
+    {
+        "id": "070f083103d11b4e",
+        "type": "split",
+        "z": "bccd8b5d240f8b66",
+        "name": "Split LEDs",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload",
+        "x": 830,
+        "y": 580,
+        "wires": [
+            [
+                "dad9ad7d009dc194"
+            ]
+        ]
+    },
+    {
+        "id": "dad9ad7d009dc194",
+        "type": "change",
+        "z": "bccd8b5d240f8b66",
+        "name": "Set topic to key name",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "parts.key",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "x": 1060,
+        "y": 580,
+        "wires": [
+            [
+                "3d436deb0470b317"
+            ]
+        ]
+    },
+    {
+        "id": "3d436deb0470b317",
+        "type": "ui_template",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "name": "liquid level",
+        "order": 4,
+        "width": 7,
+        "height": 4,
+        "format": "   <h3><b>Liquid Level Status</b></h3>\n<div style=\"position:relative; width:100%; height:200px; margin:0 auto; background:#ffffff; border:2px solid #333; border-radius:8px; background-image: url('/sonar.png'); background-size: cover; background-position: center;\">\n  <!-- Machine Box Overlay Text -->\n \n  <div style=\"position:absolute; width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px; color:#333;\">\n    \n  </div>\n\n  <!-- LEDs -->\n  <div id=\"red-led\" class=\"led\" data-name=\"red\"></div>\n  <div id=\"blue-led\" class=\"led\" data-name=\"blue\"></div>\n</div>\n\n<style>\n  .led {\n    position: absolute;\n    width: 32px;\n    height: 32px;\n    border-radius: 50%;\n    background: #111;\n    box-shadow: 0 0 6px rgba(0,0,0,0.8);\n    transition: background 0.2s, box-shadow 0.2s;\n    transform: translate(-50%, -50%);\n  }\n\n  .led.on.red { background:#ff2b2b; box-shadow:0 0 15px rgba(255,43,43,0.9); }\n  .led.on.blue { background:#37ff00; box-shadow:0 0 15px rgba(55,255,0,0.9); }\n\n  /* Position LEDs on the box */\n  #red-led { left:25%; top:30%; }\n  #blue-led { left:75%; top:30%; }\n</style>\n\n<script>\n(function(scope){\n  function setLed(name, state){\n    var el = document.querySelector('.led[data-name=\"'+name+'\"]');\n    if(!el) return;\n    if(String(state) === 'ON'){\n      el.classList.add('on');\n      el.classList.add(name);\n    } else {\n      el.classList.remove('on');\n      el.classList.remove(name);\n    }\n  }\n\n  scope.$watch('msg', function(msg){\n    if(!msg) return;\n    if(msg.topic && msg.payload !== undefined){\n      setLed(String(msg.topic).toLowerCase(), msg.payload);\n    }\n  });\n})(scope);\n</script>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "Machine",
+        "x": 1260,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "edc426b1da328663",
+        "type": "comment",
+        "z": "bccd8b5d240f8b66",
+        "name": "Liquid Level",
+        "info": "Liquid Level",
+        "x": 670,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "eb49a38777f6aa98",
+        "type": "comment",
+        "z": "bccd8b5d240f8b66",
+        "name": "Fan ",
+        "info": "Liquid Level",
+        "x": 650,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "8ee653b6d0a45467",
+        "type": "mqtt in",
+        "z": "bccd8b5d240f8b66",
+        "name": "Bowl Temp Subscriber",
+        "topic": "bowlT",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f642a2dac67641e6",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 200,
+        "y": 940,
+        "wires": [
+            [
+                "253b2e2eafd71187"
+            ]
+        ]
+    },
+    {
+        "id": "253b2e2eafd71187",
+        "type": "switch",
+        "z": "bccd8b5d240f8b66",
+        "name": "Check FS/ FO",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "FS",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "FS",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 460,
+        "y": 940,
+        "wires": [
+            [
+                "474fc65446a21922"
+            ],
+            [
+                "c65295e6eead23de"
+            ]
+        ]
+    },
+    {
+        "id": "57c1dc1055a11655",
+        "type": "function",
+        "z": "bccd8b5d240f8b66",
+        "name": "function 4",
+        "func": "// Initialize angle if not set\nlet angle = flow.get(\"angle\") || 0;\n\n// Get fan speed from slider\nlet fanSpeed =120;\n\n// Update angle\nangle += fanSpeed;\n// angle = angle % 360;\nif(angle > 360) angle = 0;\nflow.set(\"angle\", angle);\n\n// Send messages for fan rotation and status\nlet fanMsg = { payload: angle };\nlet statusMsg = { payload: \"Fan ON\" };\nreturn [fanMsg, statusMsg];\n",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 900,
+        "wires": [
+            [
+                "f30e3b04668bdeae"
+            ],
+            [
+                "49ecec10528f8336"
+            ]
+        ]
+    },
+    {
+        "id": "f30e3b04668bdeae",
+        "type": "ui_template",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "name": "fan",
+        "order": 6,
+        "width": 6,
+        "height": 4,
+        "format": "<h2>\n  <p> Temperature Controll Fan </p>\n</h2>\n<div style=\"position:relative; width:150px; height:150px; margin:0 auto;\">\n  <img id=\"fan\" src=\"/fan.png\" style=\"width:100%; transition: transform 0.2s;\">\n</div>\n\n<script>\n  (function(scope) {\n  scope.$watch('msg', function(msg) {\n    if(!msg) return;\n    var angle = msg.payload || 0;\n    var fan = document.getElementById('fan');\n    if(fan) fan.style.transform = 'rotate(' + angle + 'deg)';\n  });\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1150,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "49ecec10528f8336",
+        "type": "ui_text",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "order": 17,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Fan Status :",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 1190,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "474fc65446a21922",
+        "type": "trigger",
+        "z": "bccd8b5d240f8b66",
+        "name": "Fan Rotation Trigger",
+        "op1": "1",
+        "op2": "",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "1",
+        "extend": true,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "reset",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 740,
+        "y": 900,
+        "wires": [
+            [
+                "57c1dc1055a11655"
+            ]
+        ]
+    },
+    {
+        "id": "c65295e6eead23de",
+        "type": "change",
+        "z": "bccd8b5d240f8b66",
+        "name": "Fan OFF",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Temperature is normal, Fan is OFF",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "reset",
+                "pt": "msg",
+                "to": "true",
+                "tot": "bool"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 980,
+        "wires": [
+            [
+                "474fc65446a21922",
+                "49ecec10528f8336"
+            ]
+        ]
+    },
+    {
+        "id": "0842dd5a5471ca4d",
+        "type": "ui_text",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "order": 15,
+        "width": 5,
+        "height": 1,
+        "name": "liquid text",
+        "label": "",
+        "format": "if  Liquid Level is low -->  Green Led On --> Water Pump On",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 380,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "dce3409acc279342",
+        "type": "comment",
+        "z": "bccd8b5d240f8b66",
+        "name": "SugarT",
+        "info": "",
+        "x": 190,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "7c497982d2096fb9",
+        "type": "ui_template",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "name": "New Tank Status (FFC/FFO Copy)",
+        "order": 21,
+        "width": 8,
+        "height": 8,
+        "format": "<div style=\"text-align:center;\">\n  <h3><b>Sugar Status</b></h3>\n  <img src=\"/sugarX.png\" alt=\"Tank Image\" style=\"width:80%;border-radius:10px;box-shadow:0 0 10px #aaa;\">\n  <div style=\"margin-top:10px;display:flex;justify-content:center;gap:20px;\">\n    <div>\n      <div id=\"ledGreenNew\"\n        style=\"width:25px;height:25px;border-radius:50%;background-color:gray;border:2px solid #444;\"></div>\n      <p style=\"margin-top:5px;font-weight:bold;color:green;\">Sugar level Low, Fermentation Complete</p>\n    </div>\n    <div>\n      <div id=\"ledRedNew\" style=\"width:25px;height:25px;border-radius:50%;background-color:gray;border:2px solid #444;\">\n      </div>\n      <p style=\"margin-top:5px;font-weight:bold;color:red;\">Fermentation Running</p>\n    </div>\n  </div>\n</div>\n\n<script>\n  (function(scope) {\n    scope.$watch('msg.payload', function(data) {\n        if (data === undefined) return;\n        \n        // Simple logic copied from sugarT\n        if (data === \"FFC\") {\n            document.getElementById('ledGreenNew').style.backgroundColor = 'limegreen';\n            document.getElementById('ledRedNew').style.backgroundColor = 'gray';\n        } else if (data === \"FFO\") {\n            document.getElementById('ledGreenNew').style.backgroundColor = 'gray';\n            document.getElementById('ledRedNew').style.backgroundColor = 'red';\n        } else {\n            document.getElementById('ledGreenNew').style.backgroundColor = 'gray';\n            document.getElementById('ledRedNew').style.backgroundColor = 'gray';\n        }\n    });\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 560,
+        "y": 1580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "886eb318cbed2f09",
+        "type": "mqtt in",
+        "z": "bccd8b5d240f8b66",
+        "name": "Sugar Topic Subscriber (Copy)",
+        "topic": "sugarT",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f642a2dac67641e6",
+        "nl": false,
+        "rap": false,
+        "rh": 0,
+        "inputs": 0,
+        "x": 230,
+        "y": 1580,
+        "wires": [
+            [
+                "7c497982d2096fb9"
+            ]
+        ]
+    },
+    {
+        "id": "5e22f9571d80bff4",
+        "type": "ui_template",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "name": "CO2 Status (Fixed)",
+        "order": 23,
+        "width": 7,
+        "height": 8,
+        "format": "<div style=\"text-align:center;\">\n  <h3><b>CO₂ Status</b></h3>\n  <img src=\"/gas.png\" alt=\"Gas Image\" style=\"width:80%;border-radius:10px;box-shadow:0 0 10px #aaa;\">\n  <div style=\"margin-top:10px;display:flex;justify-content:center;gap:20px;\">\n    <div>\n      <div id=\"ledGreen_{{$id}}\" style=\"width:25px;height:25px;border-radius:50%;background-color:gray;border:2px solid #444;\"></div>\n      <p style=\"margin-top:5px;font-weight:bold;color:green;\">CO₂ High — Fermentation Active</p>\n    </div>\n    <div>\n      <div id=\"ledRed_{{$id}}\" style=\"width:25px;height:25px;border-radius:50%;background-color:gray;border:2px solid #444;\"></div>\n      <p style=\"margin-top:5px;font-weight:bold;color:red;\">CO₂ Low — Check Fermentation</p>\n    </div>\n  </div>\n</div>\n\n<script>\n(function(scope) {\n  scope.$watch('msg.payload', function(data) {\n    if (data === undefined) return;\n    const green = document.getElementById('ledGreen_' + scope.$id);\n    const red = document.getElementById('ledRed_' + scope.$id);\n    if (!green || !red) return; // DOM safety\n\n    if (data === 'AF') {\n      green.style.backgroundColor = 'limegreen';\n      red.style.backgroundColor = 'gray';\n    } else if (data === 'CF') {\n      green.style.backgroundColor = 'gray';\n      red.style.backgroundColor = 'red';\n    } else {\n      green.style.backgroundColor = 'gray';\n      red.style.backgroundColor = 'gray';\n    }\n  });\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 490,
+        "y": 1760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "926554db05942cdf",
+        "type": "mqtt in",
+        "z": "bccd8b5d240f8b66",
+        "name": "CO₂ Topic",
+        "topic": "CO2T",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "f642a2dac67641e6",
+        "nl": false,
+        "rap": false,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 1760,
+        "wires": [
+            [
+                "5e22f9571d80bff4"
+            ]
+        ]
+    },
+    {
+        "id": "c00943d48196e194",
+        "type": "ui_text",
+        "z": "bccd8b5d240f8b66",
+        "group": "bf4298c8f0402a55",
+        "order": 2,
+        "width": 8,
+        "height": 1,
+        "name": "sake",
+        "label": "",
+        "format": "Sake Brewing Lab",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 430,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "91fe40047908f70c",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 1,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "b3af49b54e40af57",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 3,
+        "width": 6,
+        "height": 1
+    },
+    {
+        "id": "a06cba24e4c6bae5",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 5,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "38a11e1b366478c2",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 7,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "4155b30753f54c3b",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 8,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "ce8d727f11119322",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 9,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "616460b7c0de229e",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 10,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "afb4c5e961c19b30",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 11,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "a662673e03fa62e4",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 12,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "618a013ebd713653",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 13,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "64e9d00c4395e221",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 14,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "03dd56cdfa33e5db",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 16,
+        "width": 3,
+        "height": 1
+    },
+    {
+        "id": "5c0bb6fc0aa83455",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 18,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "c14985ee496c4b01",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 19,
+        "width": 9,
+        "height": 1
+    },
+    {
+        "id": "2ecca774004f66c2",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 20,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "6c32c8c76dbfb71c",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 22,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "7c42d8ca15b670af",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 24,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "a0b4da16aec40354",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 25,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "8f57a89bb3c2ed07",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 26,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "d322aa31c518ddac",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 27,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "aa788496cb100378",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 28,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "7c12e36902abc11d",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 29,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "8895ce9ac85831d3",
+        "type": "ui_spacer",
+        "z": "bccd8b5d240f8b66",
+        "name": "spacer",
+        "group": "bf4298c8f0402a55",
+        "order": 30,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "f642a2dac67641e6",
+        "type": "mqtt-broker",
+        "name": "Local MQTT Broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 15,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "bf4298c8f0402a55",
+        "type": "ui_group",
+        "name": "Controls",
+        "tab": "aa1919f00b498810",
+        "order": 1,
+        "disp": true,
+        "width": "16",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "aa1919f00b498810",
+        "type": "ui_tab",
+        "name": "MQTT Dashboard",
+        "icon": "dashboard",
+        "order": 1
+    },
+    {
+        "id": "e94ead606878b27f",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
