@@ -46,7 +46,7 @@ const captureImageToServer = async () => {
       <div>
         <h2>Live Camera Feed</h2>
         <iframe
-          src="http://192.168.88.20:8080/jsfs.html"
+          src="http://192.168.88.39:8080/jsfs.html"
           width="800"
           height="600"
           title="IP Camera"
