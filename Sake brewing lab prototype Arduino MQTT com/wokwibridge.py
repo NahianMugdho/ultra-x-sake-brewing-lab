@@ -94,7 +94,7 @@ import time
 import datetime
 
 # ------------------- Configuration -------------------
-BROKER = "localhost"
+BROKER =     "bdtmp.ultra-x.jp"
 PORT = 1883
 USERNAME = "admin"
 PASSWORD = "StrongPassword123"

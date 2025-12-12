@@ -7,11 +7,11 @@ import time
 # ============================================================
 # MQTT BROKER CONFIGURATION
 # ============================================================
-BROKER = "localhost"             # or your PC IP if using remotely
-PORT = 8883                      # TLS port
+BROKER = "bdtmp.ultra-x.jp"             # or your PC IP if using remotely
+PORT = 1883                      # TLS port
 USERNAME = "admin"
 PASSWORD = "StrongPassword123"
-CA_CERT = "broker.crt"           # Certificate Authority / self-signed cert
+# CA_CERT = "broker.crt"           # Certificate Authority / self-signed cert
 
 # ============================================================
 # TOPIC STRUCTURE
@@ -59,13 +59,13 @@ client = mqtt.Client(client_id="fermentation_monitor_sub", clean_session=True)
 client.username_pw_set(USERNAME, PASSWORD)
 
 # Enable TLS Encryption
-client.tls_set(
-    ca_certs=CA_CERT,
-    certfile=None,
-    keyfile=None,
-    tls_version=ssl.PROTOCOL_TLSv1_2
-)
-client.tls_insecure_set(True)  # Allow self-signed certificates
+# client.tls_set(
+#     # ca_certs=CA_CERT,
+#     certfile=None,
+#     keyfile=None,
+#     tls_version=ssl.PROTOCOL_TLSv1_2
+# )
+# client.tls_insecure_set(True)  # Allow self-signed certificates
 
 client.on_connect = on_connect
 client.on_message = on_message

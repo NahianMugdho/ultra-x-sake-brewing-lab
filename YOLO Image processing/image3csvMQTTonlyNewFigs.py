@@ -10,7 +10,7 @@ import paho.mqtt.client as mqtt
 # ============================================================
 # CONFIGURATION
 # ============================================================
-IMAGE_DIR = r"D:\mugdho\ultra-X sake brewing lab\v3Test\client-SIde\client\images"
+IMAGE_DIR = r"D:\mugdho\ultra-X sake brewing lab\YOLO Image processing\images"
 CSV_FILE = "detection_log.csv"
 CONF_THRESHOLD = 0.2
 CHECK_INTERVAL = 5  # seconds

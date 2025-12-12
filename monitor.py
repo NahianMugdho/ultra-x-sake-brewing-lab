@@ -6,9 +6,9 @@ import ssl
 BROKER = "localhost"       # বা তোমার PC-এর IP
 PORT = 8883                # Secure MQTT TLS port
 ESP_TOPIC = "ESP2"
-ESP2_TOPIC = "test/topic"
+ESP2_TOPIC = "lab/detections"
 TEXT_TOPIC = "text"
-ESP3_TOPIC = "ESP3"
+ESP3_TOPIC = "ESPX"
 JM_TOPIC = "jmeter"
 USERNAME = "admin"         # .env এ যেটা সেট করেছো
 PASSWORD = "StrongPassword123"
